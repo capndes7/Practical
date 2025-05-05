@@ -1,0 +1,136 @@
+Importing libraries:
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+
+
+
+
+
+
+
+
+
+
+loading dataset
+
+df = pd.read_csv('Savari.csv')
+df.head()
+
+
+
+
+
+
+
+
+
+
+
+
+
+Basic Data Analysis
+
+print(df.tail())
+print(df.head())
+print(df.shape)
+print(df.dtypes)
+print(df.isnull().sum())
+print(df.count)
+
+
+
+
+
+
+
+
+
+
+Statistical Analysis
+
+print(df.mean(numeric_only=True))
+print(df.median(numeric_only=True))
+print(df.mode(numeric_only=True).iloc[0])
+print(df.std(numeric_only=True))
+
+
+
+
+
+------------------Q2---------------------
+
+
+
+
+combining two data frames ( For visualization)
+
+
+df_extra = df.sample(20, random_state=1)
+combined_df = pd.concat([df,df_extra], ignore_index=True)
+combined_df.shape
+
+
+
+
+
+Plotting Histogram
+
+plt.figure()
+plt.hist(combined_df['Sales_Price'],bins=20, color='orange')
+plt.title('Histogram of Sale_Price')
+plt.xlabel('Sale_Price')
+plt.ylabel('Income')
+plt.grid()
+plt.show()
+
+
+
+
+
+
+
+Plotting Scatterplot
+
+plt.figure()
+plt.scatter(combined_df['Sales_Price'], combined_df['Year_Id'], color='green')
+plt.title('Sales Price vs Scatter Plot')
+plt.xlabel('Sales Price')
+plt.ylabel('Year')
+plt.grid()
+plt.show()
+
+
+
+
+
+
+
+----------------------Q3--------------------
+
+k MEANS
+
+X = df[['Sales_Price','Year_Id','Quantity_Ordered','Order_Id']]
+X_scaled = StandardScaler().fit_transform(X)
+
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['Cluster']= kmeans.fit_predict(X_scaled)
+plt.figure()
+sns.scatterplot(data=df, x='Sales_Price', y='Year_Id', hue='Cluster', palette='viridis')
+plt.title('K-Means Clustering ( Sales Price vs Year_Id)')
+plt.show()
+
+
+
+
+
+
+
+
+
